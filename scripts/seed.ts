@@ -9,8 +9,27 @@
 // Idempotent: skips if a template with the same name already exists.
 // ---------------------------------------------------------------------------
 
-import { readFileSync } from "node:fs";
+import { readFileSync, existsSync } from "node:fs";
 import path from "node:path";
+
+// Load .env / .env.local for this standalone script (Next.js does this for the
+// app automatically, but the seed runs outside Next). Existing env vars win.
+function loadEnvFile(file: string) {
+  if (!existsSync(file)) return;
+  for (const line of readFileSync(file, "utf8").split(/\r?\n/)) {
+    const m = line.match(/^\s*([A-Za-z_][A-Za-z0-9_]*)\s*=\s*(.*)\s*$/);
+    if (!m) continue;
+    const key = m[1];
+    let val = m[2].trim();
+    if ((val.startsWith('"') && val.endsWith('"')) || (val.startsWith("'") && val.endsWith("'"))) {
+      val = val.slice(1, -1);
+    }
+    if (process.env[key] === undefined) process.env[key] = val;
+  }
+}
+loadEnvFile(path.join(process.cwd(), ".env"));
+loadEnvFile(path.join(process.cwd(), ".env.local"));
+
 import { getRepo, activeDriver } from "../src/lib/storage/index";
 import { parseUpload } from "../src/lib/spectora/importService";
 
