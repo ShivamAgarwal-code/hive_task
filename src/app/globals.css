@@ -1,0 +1,43 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  color-scheme: light;
+}
+
+body {
+  @apply bg-cream-100 text-stone-900 antialiased;
+  background-image: radial-gradient(circle at 15% 0%, #fdfbf6 0%, rgba(253, 251, 246, 0) 45%),
+    radial-gradient(circle at 100% 0%, #f9efe9 0%, rgba(249, 239, 233, 0) 40%);
+  background-attachment: fixed;
+}
+
+/* Rendered comment HTML gets sensible default styling so imported formatting
+   (lists, links, bold) reads well without a heavy prose framework. */
+.comment-html a {
+  @apply text-brand-600 underline;
+}
+.comment-html ul {
+  @apply list-disc pl-5 my-1;
+}
+.comment-html ol {
+  @apply list-decimal pl-5 my-1;
+}
+.comment-html p {
+  @apply my-1;
+}
+.comment-html strong,
+.comment-html b {
+  @apply font-semibold;
+}
+.comment-html img {
+  @apply max-w-full rounded border border-stone-200 my-2;
+}
+.comment-html table {
+  @apply border-collapse my-2;
+}
+.comment-html td,
+.comment-html th {
+  @apply border border-stone-300 px-2 py-1;
+}
